@@ -1,5 +1,6 @@
-require 'telegram/bot'
+require 'htmlentities'
 require 'net/http'
+require 'telegram/bot'
 
 class YesBot
   attr_reader :current_quiz
@@ -16,12 +17,16 @@ class YesBot
 
   def quiz(message)
     set_current_quiz
-    question = @current_quiz['question']
+    html_entity = HTMLEntities.new
+    question = html_entity.decode(@current_quiz['question'])
     answers = [@current_quiz['correct_answer'], *@current_quiz['incorrect_answers']].shuffle
     kb = []
 
     answers.each do |ans|
-      kb << Telegram::Bot::Types::InlineKeyboardButton.new(text: ans, callback_data: ans)
+      kb << Telegram::Bot::Types::InlineKeyboardButton.new(
+        text: html_entity.decode(ans),
+        callback_data: html_entity.decode(ans)
+      )
     end
     markup = Telegram::Bot::Types::InlineKeyboardMarkup.new(inline_keyboard: kb)
 
