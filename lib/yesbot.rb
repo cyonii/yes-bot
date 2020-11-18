@@ -11,8 +11,7 @@ class YesBot
 
   def start(message)
     msg = "Hello, #{message.from.first_name}, I'm `but! yesBot`, your boring questionnaire."
-    r = @bot.api.send_message(chat_id: message.chat.id, text: msg)
-    puts r
+    @bot.api.send_message(chat_id: message.chat.id, text: msg)
   end
 
   def quiz(message)
