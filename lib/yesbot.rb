@@ -1,8 +1,6 @@
-require 'htmlentities'
 require 'net/http'
 require 'telegram/bot'
 
-HTML = HTMLEntities.new
 InlineButton = Telegram::Bot::Types::InlineKeyboardButton
 Markup = Telegram::Bot::Types::InlineKeyboardMarkup
 
@@ -21,6 +19,12 @@ class YesBot
     end
   end
 
+  def self.fetch_quiz(amount = 1)
+    uri = URI("https://opentdb.com/api.php?amount=#{amount}")
+    response = Net::HTTP.get(uri)
+    JSON.parse(response)
+  end
+
   def respond(message)
     case message
     when Telegram::Bot::Types::CallbackQuery
@@ -28,12 +32,6 @@ class YesBot
     when Telegram::Bot::Types::Message
       message_handler(message)
     end
-  end
-
-  def self.fetch_quiz(amount = 1)
-    uri = URI("https://opentdb.com/api.php?amount=#{amount}")
-    response = Net::HTTP.get(uri)
-    JSON.parse(response)
   end
 
   private
@@ -45,35 +43,43 @@ class YesBot
 
   def send_quiz(message)
     set_current_quiz
-    question = HTML.decode(@current_quiz['question'])
+    question = @current_quiz['question']
     answers = [
       @current_quiz['correct_answer'],
       *@current_quiz['incorrect_answers']
-    ].shuffle.map { |ans| HTML.decode(ans) }
-    kb = []
+    ].shuffle.map { |ans| ans }
+    keyboard = answers.map { |ans| InlineButton.new(text: ans, callback_data: ans) }
+    markup = Markup.new(inline_keyboard: keyboard)
 
-    answers.each { |ans| kb << InlineButton.new(text: ans, callback_data: ans) }
-    markup = Markup.new(inline_keyboard: kb)
-
-    @bot.api.send_message(chat_id: YesBot.chat_id(message), text: question, reply_markup: markup)
+    @bot.api.send_message(
+      chat_id: YesBot.chat_id(message),
+      text: question,
+      reply_markup: markup,
+      parse_mode: :HTML
+    )
   end
 
   def callback_query_handler(message)
-    correct_answer = HTML.decode(@current_quiz['correct_answer'])
+    correct_answer = @current_quiz['correct_answer']
 
     if message.data == correct_answer
       @bot.api.send_message(chat_id: YesBot.chat_id(message), text: 'Correct')
     else
       @bot.api.send_message(chat_id: YesBot.chat_id(message), text: 'Wrong')
-      @bot.api.send_message(chat_id: YesBot.chat_id(message), text: "Correct answer is #{correct_answer}")
     end
+    @bot.api.send_message(
+      chat_id: YesBot.chat_id(message),
+      text: "*Correct answer is:* #{correct_answer}",
+      parse_mode: :markdown
+    )
   end
 
   def message_handler(message)
     case message.text
     when '/start'
       start(message)
-      @bot.api.send_message(chat_id: YesBot.chat_id(message), text: 'Enter /quiz to take a random quiz.')
+      instruction = 'Enter /quiz to take a random quiz.'
+      @bot.api.send_message(chat_id: YesBot.chat_id(message), text: instruction)
     when '/quiz'
       send_quiz(message)
     else
