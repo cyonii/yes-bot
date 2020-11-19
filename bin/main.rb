@@ -12,11 +12,6 @@ client.run(token) do |bot|
   yesbot = YesBot.new(bot)
 
   bot.listen do |message|
-    case message
-    when Telegram::Bot::Types::CallbackQuery
-      yesbot.check_answer(message)
-    when Telegram::Bot::Types::Message
-      yesbot.respond(message)
-    end
+    yesbot.respond(message)
   end
 end
