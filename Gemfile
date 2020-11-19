@@ -5,5 +5,5 @@ git_source(:github) { |repo_name| "https://github.com/#{repo_name}" }
 gem 'htmlentities'
 gem 'json'
 gem 'net-http-persistent'
-gem 'rspec', '~>3.0'
+gem 'rspec'
 gem 'telegram-bot-ruby'
