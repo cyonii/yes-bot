@@ -1,6 +1,6 @@
 require 'telegram/bot'
 require_relative '../lib/yesbot'
-require_relative '_test_objects'
+require_relative './_test_objects'
 
 describe YesBot do
   let(:client) { Telegram::Bot::Client.new('fake_7ab-3edfd-31dsa2') }
