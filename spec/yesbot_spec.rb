@@ -52,7 +52,10 @@ describe YesBot do
 
   describe '.fetch_quiz' do
     it 'fetches quiz API from opentdb.com API' do
-      expect(YesBot.fetch_quiz).to be_a(Hash)
+      response = YesBot.fetch_quiz
+      expect(response).to be_a(Hash)
+      expect(response['response_code']).to eql(0)
+      expect(response['results'].length).to be > 0
     end
   end
 end
