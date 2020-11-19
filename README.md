@@ -1,8 +1,8 @@
 ![](https://img.shields.io/badge/Microverse-blueviolet)
 
-# but! yesBot
+# About YesBot
 
-This project is a telegram bot that interacts with users. The bot `but! yesBot` acts as a friendly questionnaire that engages users in series of quiz of very random questions.
+This project is a telegram bot that interacts with users. The bot `YesBot` acts as a friendly questionnaire that engages users in series of quiz of very random questions.
 
 My idea of this bot was to create a simple friendly and educative companion that helps users overcome boredom by sharing random knowledge.
 
