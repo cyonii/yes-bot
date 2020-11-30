@@ -14,6 +14,7 @@ TestMessageEntity = Telegram::Bot::Types::MessageEntity.new(
   length: 6,
   type: 'bot_command'
 )
+
 TestChat = Telegram::Bot::Types::Chat.new(
   id: 452_422_223_678,
   first_name: 'John',
@@ -24,6 +25,7 @@ TestChat = Telegram::Bot::Types::Chat.new(
   text: '/start',
   entities: [TestMessageEntity]
 )
+
 TestMessage = Telegram::Bot::Types::Message.new(
   message_id: 323_424_424_553,
   from: TestUser,
