@@ -47,7 +47,7 @@ class YesBot
     answers = [
       @current_quiz['correct_answer'],
       *@current_quiz['incorrect_answers']
-    ].shuffle.map { |ans| ans }
+    ].shuffle
     keyboard = answers.map { |ans| InlineButton.new(text: ans, callback_data: ans) }
     markup = Markup.new(inline_keyboard: keyboard)
 
