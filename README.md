@@ -2,6 +2,8 @@
 
 # About YesBot
 
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/b5122bd0fc5649eebb07a37508e67888)](https://app.codacy.com/gh/cyonii/yes-bot?utm_source=github.com&utm_medium=referral&utm_content=cyonii/yes-bot&utm_campaign=Badge_Grade)
+
 This project is a telegram bot that interacts with users. The bot `YesBot` acts as a friendly questionnaire that engages users in series of quiz of very random questions.
 
 My idea of this bot was to create a simple friendly and educative companion that helps users overcome boredom by sharing random knowledge.
